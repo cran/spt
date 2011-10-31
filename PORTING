@@ -1,0 +1,13 @@
+Initialized on October 29, 2011.
+
+10/29/11: initialize the package: v0.01.
+
+10/30/11: merge the "spt" function with "chaosgame" function.  1)
+remove plot=TRUE option; always draw the plot.  It can be saved to a
+file manually. 2) initial point will not be specified by default.  By
+default, randomly select a point within the plotting area. 3) adding
+option chaosgame=FALSE to determine how to draw the SPT. 4) iteration
+number will not be specified.  Taking default value 10000 for
+"chaosgame" and 15 for regular drawing. 5) removing "main=NULL".  It
+can be specified, but not prespecified. 6) "tol=0.00001" is removed,
+and taken as default value.
