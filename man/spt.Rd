@@ -43,7 +43,7 @@
 \examples{
 
 (abc = spt(50,60))
-plot(abc, iter=20)
+plot(abc, iter=10)
 
 }
 \keyword{stats}

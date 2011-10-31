@@ -103,7 +103,7 @@ void SptDimFP(double *angles, double *dim){
   */
   int i;
   double a,b,c, tol = 6.123234e-17;
-  double x0=log(3.0)/log(2.0), x1 = 2.0, xi, fa,fb,fc = 1.; //initial values;
+  double x0=log(3.0)/log(2.0), x1 = 2.0, xi,fc = 1.; //initial values;
   a = angles[0]*PI/180.;
   b = angles[1]*PI/180.;
   c = angles[2]*PI/180.;
@@ -112,7 +112,6 @@ void SptDimFP(double *angles, double *dim){
     dim[0] = 2.0;
   else{
     i=0;
-    fa = fsptdim(a,b,c,x0); fb= fsptdim(a,b,c,x1);
     while(fabs(fc) > tol && i<100){
       xi = 0.5 *(x0+x1);
       fc = fsptdim(a,b,c,xi);
@@ -121,7 +120,6 @@ void SptDimFP(double *angles, double *dim){
       else{
 	x0=xi;
       }
-      fa = fsptdim(a,b,c,x0); fb= fsptdim(a,b,c,x1);
       i++;
     }
     dim[0] = xi;

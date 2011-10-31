@@ -18,3 +18,4 @@ functions to the namespace. (3) output a class 'sped' for further study.
 
 11/16/11:  change to ver 1.1-2. We define two classes: "SPT" and "ST".  Initialize with SPT/ST.  The visible region can be changed with "viewport".
 Add "chaos" and plot.spt, plot.pt, print.spt, print pt.
+11/27/2011: clean redundant c codes. Remove unused 'fa', 'fb' in ckernel.c.
