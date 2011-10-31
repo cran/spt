@@ -1,10 +1,12 @@
-spt <- function(A,B){
+
+
+st <- function(A,B){
   if(missing(A)||missing(B))
     stop("Sizes of at least two angles need to be specified.")
   if(A<=0 || B<=0 || A>=180 || B >=180 || A+B>=180)
     stop("Invaid angle size(s) specified: 0<A<180, 0<B<180, and 0<A+B<180.")
   A1 = A; B1 = B; C1 = 180.0-(A1+B1)
-  triname = paste("SPT(",as.character(format(A1,20)),",",
+  triname = paste("ST(",as.character(format(A1,20)),",",
     as.character(format(B1,20)),",",
     as.character(format(180-A1-B1)),")",sep='')
   angles = sort(c(A1,B1,C1),decreasing=TRUE)
@@ -27,18 +29,15 @@ spt <- function(A,B){
     ymax = ymax + delta;
   }
   viewport =c(xmin,ymin,xmax,ymax);
-  if(maxA > 90) sptdim = NA
-  else if(maxA==90) sptdim = 2.0
-  else sptdim = .Fortran(.F_SptDimFP, as.double(angles),as.double(0))[[2]]
 
   out = structure(list(angles=angles, viewport=viewport,
     ABC = cbind(c(xa,xb,xc), c(ya,yb,yc)),
     tri = list(A=A,B=B,C=C,xa=xa,xb=xb,xc=xc,ya=ya,yb=yb,yc=yc,A0=A0,B0=B0,C0=C0),
-    Dim = sptdim, data.name = triname), class = "spt")
+    Dim = log(3)/log(2), data.name = triname), class = "st")
 }
 
 
-print.spt <- function(x,...){
+print.st <- function(x,...){
   tmp = x$ABC
   Angles = c(x$angles[3],x$angles[1],x$angles[2])
   tmp = data.frame(Angles=Angles,x=tmp[,1],y=tmp[,2])
@@ -54,26 +53,19 @@ print.spt <- function(x,...){
 }
 
 
-plot.spt <- function(x,iter,tol=0.0001,main=NULL,...){
+plot.st <- function(x,iter,tol=0.0001,main=NULL,...){
   xmin = x$viewport[1];
   ymin = x$viewport[2];
   xmax = x$viewport[3];
   ymax = x$viewport[4];
-  maxA = x$angles[1]
   if(is.null(main)) main = x$data.name
   plot(0,0, type='n', bty='n', xaxt='n',yaxt='n',
        xlab='', ylab='', asp=1, main = main,
        xlim=c(xmin,xmax), ylim=c(ymin,ymax))
   polygon(x$ABC[,1], x$ABC[,2],...);
-  if(missing(iter)) iter = 11
+  if(missing(iter)) iter = 12
   if(iter < 1) stop("Iteration number can not be zero/negative.")
   Tri0 = x$ABC;
   tol = tol * (xmax-xmin) * (ymax-ymin)
-  trilist = NULL # to save all resulted SPT (the triangle to be pasted)
-  if(maxA == 90)
-    .sptpedal2(iter,Tri0,tol)
-  else if(maxA < 90)
-    .sptpedal3(iter,Tri0,tol)
-  else trilist = .sptpedal4(min(12,iter),Tri0,tol)
-  invisible(trilist)
+  .ptpedal(iter,Tri0,tol)
 }

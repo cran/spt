@@ -101,6 +101,7 @@ void SptDimFP(double *angles, double *dim){
     Secant method is used.  (a generalization of Secant method: 
     Method of False position)
   */
+  int i;
   double a,b,c, tol = 6.123234e-17;
   double x0=log(3.0)/log(2.0), x1 = 2.0, xi, fa,fb,fc = 1.; //initial values;
   a = angles[0]*PI/180.;
@@ -110,8 +111,9 @@ void SptDimFP(double *angles, double *dim){
   if(R_pow(cos(a),x0)<= tol)
     dim[0] = 2.0;
   else{
+    i=0;
     fa = fsptdim(a,b,c,x0); fb= fsptdim(a,b,c,x1);
-    while(fabs(fc) > tol){
+    while(fabs(fc) > tol && i<100){
       xi = 0.5 *(x0+x1);
       fc = fsptdim(a,b,c,xi);
       if(fc<0){
@@ -120,6 +122,7 @@ void SptDimFP(double *angles, double *dim){
 	x0=xi;
       }
       fa = fsptdim(a,b,c,x0); fb= fsptdim(a,b,c,x1);
+      i++;
     }
     dim[0] = xi;
   }
