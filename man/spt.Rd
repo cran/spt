@@ -3,23 +3,19 @@
 
 \name{spt}
 \alias{spt}
-\alias{F_PTChild} 
-\alias{F_SPTChild2} 
-\alias{F_SPTChild3} 
-\alias{F_SptDimFP} 
-\alias{F_stri}
 
 \title{Sierpinski Pedal Triangle and Sierpinski Triangle}
 \description{
  To draw Sierpinski pedal triangles (SPTs) and Sierpinski triangles (PTs).
 }
 \usage{
-  spt(A,B,x0,y0,iter, spt=TRUE,chaosgame=FALSE,main=NULL,tol=0.0001,...)
+  spt(A,B,x0,y0,iter,plot=TRUE, spt=TRUE,chaosgame=FALSE,main=NULL,tol=0.0001,...)
 }
 \arguments{
   \item{A,B}{The degrees of two of the three angles of a triangle.}
   \item{x0,y0}{The initial position of the point if "chaosgame=TRUE".}
   \item{iter}{Iteration number in drawing the SPTs/PTs.}
+  \item{plot}{Draw the SPT/PT (default) or compute the SPT dimention alone.}
   \item{spt}{SPT ("spt=TRUE") or PT ("spt=FALSE").}
   \item{chaosgame}{To draw the SPTs/PTs using regular method or via a chaos game. }
   \item{main}{Specify the title of the plot.}
@@ -53,8 +49,8 @@
 
  spt(45,55,spt=FALSE)
  spt(45,55,spt=TRUE)
- spt(120,30,iter=15)
- spt(10,10,iter=10)
+ spt(120,30,iter=3)
+ spt(20,20,iter=7)
 
 }
 \keyword{stats}

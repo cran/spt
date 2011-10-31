@@ -89,7 +89,7 @@ void PTChild(double *xy, double *result)
 }
 
 double fsptdim(double a, double b, double c, double d){
-  return(pow(cos(a), d)+pow(cos(b),d)+pow(cos(c),d)-1.);
+  return(R_pow(cos(a), d)+R_pow(cos(b),d)+R_pow(cos(c),d)-1.);
 }
 
 void SptDimFP(double *angles, double *dim){
@@ -101,21 +101,26 @@ void SptDimFP(double *angles, double *dim){
     Secant method is used.  (a generalization of Secant method: 
     Method of False position)
   */
-  double a,b,c;
-  double x0=1., x1 = 3., xi, fa,fb,fc = 1.; //initial values;
+  double a,b,c, tol = 6.123234e-17;
+  double x0=log(3.0)/log(2.0), x1 = 2.0, xi, fa,fb,fc = 1.; //initial values;
   a = angles[0]*PI/180.;
   b = angles[1]*PI/180.;
   c = angles[2]*PI/180.;
-  fa = fsptdim(a,b,c,x0); fb= fsptdim(a,b,c,x1);
-  while(fabs(fc) >.0000000001 && fa * fb <0.){
-    xi = (x1 * fa - x0 * fb)/(fa-fb);
-    fc = fsptdim(a,b,c,xi);
-    if(fa*fc<0){
-      x1=xi;}
-    else{
-      x0=xi;
-    }
+  //a suppose to be the larget angle
+  if(R_pow(cos(a),x0)<= tol)
+    dim[0] = 2.0;
+  else{
     fa = fsptdim(a,b,c,x0); fb= fsptdim(a,b,c,x1);
+    while(fabs(fc) > tol){
+      xi = 0.5 *(x0+x1);
+      fc = fsptdim(a,b,c,xi);
+      if(fc<0){
+	x1=xi;}
+      else{
+	x0=xi;
+      }
+      fa = fsptdim(a,b,c,x0); fb= fsptdim(a,b,c,x1);
+    }
+    dim[0] = xi;
   }
-  dim[0] = xi;
 }

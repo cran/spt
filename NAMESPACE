@@ -1,4 +1,4 @@
-useDynLib(spt, .registration = TRUE, .fixes = "F_")
+useDynLib(spt, .registration = TRUE, .fixes = ".F_")
 export(.sptConnect)
 ##export everything that does not start with a .
 exportPattern("^[^\\.]")

@@ -11,3 +11,7 @@ number will not be specified.  Taking default value 10000 for
 "chaosgame" and 15 for regular drawing. 5) removing "main=NULL".  It
 can be specified, but not prespecified. 6) "tol=0.00001" is removed,
 and taken as default value.
+
+11/4/11: In this version, (1) we fixed a bug in computing the 
+SPT dimention.  (2) We restricted the expiration of the external C/Fortran
+functions to the namespace. (3) output a class 'sped' for further study.

@@ -1,5 +1,5 @@
 Package: spt
-Version: 1.1
+Version: 1.1-1
 Date: 2011-10-31
 Title: Sierpinski Pedal Triangle
 Author: Bin Wang <bwang@jaguar1.usouthal.edu>.
@@ -8,6 +8,6 @@ Depends: R (>= 2.5.0), stats
 Suggests: MASS
 Description: This package collects algorithms related to Sierpinski pedal triangle (SPT).
 License: Unlimited
-Packaged: 2011-11-02 18:08:16 UTC; bwang
+Packaged: 2011-11-05 12:59:00 UTC; bwang
 Repository: CRAN
-Date/Publication: 2011-11-02 19:03:20
+Date/Publication: 2011-11-05 18:07:33

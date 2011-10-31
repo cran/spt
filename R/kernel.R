@@ -1,10 +1,15 @@
-spt <- function(A,B,x0,y0,iter,
+spt <- function(A,B,x0,y0,iter,plot=TRUE,
                 spt=TRUE,chaosgame=FALSE,main=NULL,tol=0.0001,...){
   if(missing(A)||missing(B))
     stop("Sizes of at least two angles need to be specified.")
   if(A<=0 || B<=0 || A>=180 || B >=180 || A+B>=180)
     stop("Invaid angle size(s) specified: 0<A<180, 0<B<180, and 0<A+B<180.")
-  A1 = A; B1 = B; C1 = 180-A-B
+  A1 = A; B1 = B; C1 = 180.0-(A1+B1)
+  triname = ifelse(spt,"SPT","ST")
+  triname = paste(triname,"(",as.character(format(A1,20)),",",
+    as.character(format(B1,20)),",",
+    as.character(format(180-A1-B1)),")",sep='')
+
   angles = sort(c(A1,B1,C1),decreasing=TRUE)
   minA = min(angles); maxA = max(angles);
   r = pi/180;  h=100;
@@ -14,66 +19,82 @@ spt <- function(A,B,x0,y0,iter,
   ABC = list(A=A,B=B,C=C,xa=xa,xb=xb,xc=xc,ya=ya,yb=yb,yc=yc,A0=A0,B0=B0,C0=C0);
 
   xmin = min(xa,xb,xc); xmax=max(xa,xb,xc); 
-  ymin = 0; ymax=h; 
-  triname = ifelse(spt,"spt","pt")
-  sptdim = ifelse(maxA>90,NA,
-    round(.Fortran(F_SptDimFP, as.double(angles),as.double(0))[[2]],3))
-  if(is.null(main)){
-    main=paste(triname,"(",A1,",",B1,",",180-A1-B1,")",sep='')
-    if(is.na(sptdim))
-      main=paste(main, ", Dim = ",sptdim,sep='')
-  }
-  if(maxA > 90 && spt){
-    delta = abs(h * sin(maxA))*.25
-    xmin = xmin - delta;
-    delta = (xmax-xmin-ymax+ymin)*.75;
-    ymin = ymin - delta;
-    ymax = ymax + delta;
-  }
-
-  ## draw the initial triangle
-  plot(0,0, type='n', bty='n', xaxt='n',yaxt='n',
-       xlab='', ylab='', asp=1, main = main,
-       xlim=c(xmin,xmax), ylim=c(ymin,ymax))
-  lines(c(ABC$xa,ABC$xb,ABC$xc,ABC$xa),
-        c(ABC$ya,ABC$yb,ABC$yc,ABC$ya),
-        lwd=2);
-
-  if(chaosgame){
-    if(missing(x0)) x0 = (xmax-xmin)*runif(1)+xmin;
-    if(missing(y0)) y0 = (ymax-ymin)*runif(1)+ymin;
-    if(missing(iter)) iter=10000;
-    
-    points(x0,y0,pch='*', col=5)
-    points(ABC$xa,ABC$ya,pch=20, col=2)
-    points(ABC$xb,ABC$yb,pch=20, col=3)
-    points(ABC$xc,ABC$yc,pch=20, col=4)
-    if(spt){
-      .GameSPT(x0,y0,ABC,iter)
-    }else{
-      .GameST(x0,y0,ABC,iter)
+  ymin = 0; ymax=h;
+  if(maxA>90) sptdim = NA
+  else if(maxA==90) sptdim = 2.0
+  else sptdim = .Fortran(.F_SptDimFP, as.double(angles),as.double(0))[[2]]
+  ##  sptdim = .Fortran(F_SptDimFP, as.double(angles),as.double(0))[[2]]
+  if(plot){
+    if(is.null(main)){
+      ##    if(is.na(sptdim)||sptdim < 0)
+      cond1 = is.null(sptdim)
+      cond2 = is.na(sptdim)
+      if(cond1 || cond2)
+        main=paste(triname, ", Dim = NA",sep='')
+      else
+        main=paste(triname, ", Dim = ",as.character(format(sptdim,20)),sep='')
     }
-  }else{
-    if(missing(iter)) iter = 20
-    Tri0 = cbind(c(xa,xb,xc), c(ya,yb,yc));
-    tol = tol * (xmax-xmin) * (ymax-ymin)
-    if(iter>0){
-      if(!spt) .ptpedal(iter,Tri0,tol)
-      else if(angles[1]==90){
-        .sptpedal2(iter,Tri0,tol)
+    if(maxA > 90 && spt){
+      delta = abs(h * sin(maxA))*.25
+      xmin = xmin - delta;
+      delta = (xmax-xmin-ymax+ymin)*.75;
+      ymin = ymin - delta;
+      ymax = ymax + delta;
+    }
+    
+    ## draw the initial triangle
+    plot(0,0, type='n', bty='n', xaxt='n',yaxt='n',
+         xlab='', ylab='', asp=1, main = main,
+         xlim=c(xmin,xmax), ylim=c(ymin,ymax))
+    lines(c(ABC$xa,ABC$xb,ABC$xc,ABC$xa),
+          c(ABC$ya,ABC$yb,ABC$yc,ABC$ya),
+          lwd=2);
+    
+    if(chaosgame){
+      if(missing(x0)) x0 = (xmax-xmin)*runif(1)+xmin;
+      if(missing(y0)) y0 = (ymax-ymin)*runif(1)+ymin;
+      if(missing(iter)) iter=10000;
+      
+      points(x0,y0,pch='*', col=5)
+      points(ABC$xa,ABC$ya,pch=20, col=2)
+      points(ABC$xb,ABC$yb,pch=20, col=3)
+      points(ABC$xc,ABC$yc,pch=20, col=4)
+      if(spt){
+        .GameSPT(x0,y0,ABC,iter)
       }else{
-        iter = ifelse(maxA>90, min(12,iter),iter)
-        .sptpedal3(iter,Tri0,tol)
+        .GameST(x0,y0,ABC,iter)
+      }
+    }else{
+      if(missing(iter)) iter = 20
+      Tri0 = cbind(c(xa,xb,xc), c(ya,yb,yc));
+      tol = tol * (xmax-xmin) * (ymax-ymin)
+      if(iter>0){
+        if(!spt) .ptpedal(iter,Tri0,tol)
+        else if(angles[1]==90){
+          .sptpedal2(iter,Tri0,tol)
+        }else{
+          iter = ifelse(maxA>90, min(12,iter),iter)
+          .sptpedal3(iter,Tri0,tol)
+        }
       }
     }
   }
-  invisible(round(sptdim,3));
+  
+  if(spt){
+    out = structure(list(angles,
+      data.name = triname,
+      Dim = sptdim, iter=iter
+      ), class = "spt")
+    cat("\n\nThe SPT dimension is", format(sptdim,10),"\n\n");
+  }else out=NULL
+  
+  invisible(out)
 }
 
 ##  Draw PT/SPT: tri1 is the initial triangle, n is the iteration number.
 .ptpedal <- function(n, tri1,tol){
   if(n>1){
-    tmp = .Fortran(F_PTChild, as.double(as.vector(tri1)), as.double(rep(0,6)));
+    tmp = .Fortran(.F_PTChild, as.double(as.vector(tri1)), as.double(rep(0,6)));
     result = matrix(tmp[[2]], ncol=2, nrow=3);
     polygon(result[,1],result[,2])
     tri1.1 = rbind(tri1[3,], result[2,], result[1,]);
@@ -89,7 +110,7 @@ spt <- function(A,B,x0,y0,iter,
 
 .sptpedal2 <- function(n, tri1,tol){
   if(n>1){
-    tmp = .Fortran(F_SPTChild2, as.double(as.vector(tri1)), as.double(rep(0,2)));
+    tmp = .Fortran(.F_SPTChild2, as.double(as.vector(tri1)), as.double(rep(0,2)));
     tmp = matrix(tmp[[2]],nrow=1);
     segments(tmp[1],tmp[2],tri1[1,1],tri1[1,2]);
     tri1.1 = rbind(tmp, tri1[3,], tri1[1,]);
@@ -103,7 +124,7 @@ spt <- function(A,B,x0,y0,iter,
 
 .sptpedal3 <- function(n, tri1, tol){
   if(n>1){
-    tmp = .Fortran(F_SPTChild3, as.double(as.vector(tri1)), as.double(rep(0,6)));
+    tmp = .Fortran(.F_SPTChild3, as.double(as.vector(tri1)), as.double(rep(0,6)));
     result = matrix(tmp[[2]], ncol=2, nrow=3);
     polygon(result[,1],result[,2])
     tri1.1 = rbind(tri1[3,], result[2,], result[1,]);
@@ -119,7 +140,7 @@ spt <- function(A,B,x0,y0,iter,
 
 .Stop <- function(triangle){
   axis = as.vector(triangle);
-  .Fortran(F_stri, as.double(axis), as.double(0))[[2]]
+  .Fortran(.F_stri, as.double(axis), as.double(0))[[2]]
 }
 
 ##########################################################################
