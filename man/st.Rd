@@ -1,23 +1,23 @@
 % This is a template R document file
 % Distributed under GPL 3 or later
 
-\name{spt}
-\alias{spt}
-\alias{plot.spt}
-\alias{print.spt}
-\title{Sierpinski Pedal Triangle}
+\name{st}
+\alias{st}
+\alias{plot.st}
+\alias{print.st}
+\title{Sierpinski  Triangle}
 \description{
- To initial, plot and show a Sierpinski pedal triangles.
+ To initial, plot and show a Sierpinski  triangles.
 }
 \usage{
-  spt(A,B)
+  st(A,B)
 }
 \arguments{
   \item{A,B}{The degrees of two of the three angles of a triangle.}
 }
 \details{
   When the original triangle is an acute triangle, 
-  the area of the smallest SPT/PT to be drawn is determined by (tol * S), 
+  the area of the smallest ST to be drawn is determined by (tol * S), 
   where S is the total area for plotting.  No restriction is applied to \code{iter}.
 
   If the original triangle is an obtuse triangle,
@@ -25,10 +25,9 @@
 
   tol: A stopping creiteria to draw the sub-SPT.  Default value 0.0001.
 
-
 }
 \value{
-  The dimension of the SPT will be returned if the original triangle 
+  The dimension of the ST will be returned if the original triangle 
   is an acute triangle.
 }
 
@@ -42,7 +41,7 @@
 }
 \examples{
 
-(abc = spt(50,60))
+(abc = st(50,60))
 plot(abc, iter=20)
 
 }
