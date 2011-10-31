@@ -9,7 +9,7 @@ spt <- function(A,B){
     as.character(format(180-A1-B1)),")",sep='')
   angles = sort(c(A1,B1,C1),decreasing=TRUE)
 
-  minA = angles[1]; maxA = angles[3];
+  minA = angles[3]; maxA = angles[1];
   r = pi/180;  h=100;
   C = angles[3]*r; B = angles[1]*r; A = angles[2]*r;
   xa = 0; ya=0;
@@ -22,7 +22,7 @@ spt <- function(A,B){
   if(maxA > 90){
     delta = abs(h * sin(maxA))*.25
     xmin = xmin - delta;
-    delta = (xmax-xmin-ymax+ymin)*.75;
+    delta = (xmax-xmin-ymax+ymin)*.8;
     ymin = ymin - delta;
     ymax = ymax + delta;
   }
@@ -44,7 +44,7 @@ print.spt <- function(x,...){
   tmp = data.frame(Angles=Angles,x=tmp[,1],y=tmp[,2])
   row.names(tmp) = c("A","B","C")
   cat("\n\t", x$data.name,"\n\n")
-  cat("Dimention = ", x$Dim,
+  cat("Dimension = ", x$Dim,
       "\tViewport=(",x$viewport[1],",",
       x$viewport[2],",",
       x$viewport[3],",",
@@ -64,7 +64,7 @@ plot.spt <- function(x,iter,tol=0.0001,main=NULL,...){
   plot(0,0, type='n', bty='n', xaxt='n',yaxt='n',
        xlab='', ylab='', asp=1, main = main,
        xlim=c(xmin,xmax), ylim=c(ymin,ymax))
-  polygon(x$ABC[,1], x$ABC[,2],...);
+  polygon(x$ABC[,1], x$ABC[,2]);
   if(missing(iter)) iter = 11
   if(iter < 1) stop("Iteration number can not be zero/negative.")
   Tri0 = x$ABC;

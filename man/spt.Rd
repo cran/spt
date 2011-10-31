@@ -16,20 +16,28 @@
   \item{A,B}{The degrees of two of the three angles of a triangle.}
 }
 \details{
-  When the original triangle is an acute triangle, 
-  the area of the smallest SPT/PT to be drawn is determined by (tol * S), 
-  where S is the total area for plotting.  No restriction is applied to \code{iter}.
 
-  If the original triangle is an obtuse triangle,
-  the largest value of \code{iter} is 12.
+  When the original triangle is an acute triangle, the area of the
+  smallest SPT/PT to be drawn is determined by (tol * S), where S is
+  the total area for plotting.  No restriction is applied to
+  \code{iter}.
 
-  tol: A stopping creiteria to draw the sub-SPT.  Default value 0.0001.
+  If the original triangle is an obtuse triangle, the largest value of
+  \code{iter} is 12.
+
+  tol: A stopping creiteria to draw the sub-SPT.  Default value
+  0.0001.
 
 
 }
 \value{
-  The dimension of the SPT will be returned if the original triangle 
-  is an acute triangle.
+  
+  The dimension of the SPT will be returned if the original triangle is
+  an acute triangle.
+
+  The viewport of showing the SPT/ST "abc" can be changed by changing
+  the value of abc$viewport.
+
 }
 
 \references{
@@ -43,7 +51,12 @@
 \examples{
 
 (abc = spt(50,60))
-plot(abc, iter=10)
+plot(abc, iter=7)
+
+(abc = spt(50,10))
+plot(abc, iter=3)
+abc$viewport = c(0,-70,84,100)
+plot(abc, iter=6)
 
 }
 \keyword{stats}

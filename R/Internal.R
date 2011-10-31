@@ -3,7 +3,7 @@
   if(n>1){
   tmp = .Fortran(.F_PTChild, as.double(as.vector(tri1)), as.double(rep(0,6)));
   result = matrix(tmp[[2]], ncol=2, nrow=3);
-  polygon(result[,1],result[,2])
+  polygon(result[,1],result[,2],col='gray')
   tri1.1 = rbind(tri1[3,], result[2,], result[1,]);
   tri1.2 = rbind(tri1[2,], result[1,], result[3,]);
   tri1.3 = rbind(tri1[1,], result[3,], result[2,]);
@@ -33,7 +33,7 @@
   if(n>1){
   tmp = .Fortran(.F_SPTChild3, as.double(as.vector(tri1)), as.double(rep(0,6)));
   result = matrix(tmp[[2]], ncol=2, nrow=3);
-  polygon(result[,1],result[,2])
+  polygon(result[,1],result[,2], col='gray')
   tri1.1 = rbind(tri1[3,], result[2,], result[1,]);
   tri1.2 = rbind(tri1[2,], result[1,], result[3,]);
   tri1.3 = rbind(tri1[1,], result[3,], result[2,]);
@@ -49,7 +49,7 @@
   if(n>1){
     tmp = .Fortran(.F_SPTChild3, as.double(as.vector(tri1)), as.double(rep(0,6)));
     result = matrix(tmp[[2]], ncol=2, nrow=3);
-    polygon(result[,1],result[,2])
+    polygon(result[,1],result[,2], col='gray')
     tri1.1 = rbind(tri1[3,], result[2,], result[1,]);
     tri1.2 = rbind(tri1[2,], result[1,], result[3,]);
     tri1.3 = rbind(tri1[1,], result[3,], result[2,]);
