@@ -6,6 +6,7 @@
 \alias{chaos.st}
 \alias{chaos.spt}
 \alias{chaos.default}
+
 \title{Chaos Games for Sierpinski (Pedal) Triangle}
 \description{
  To construct SPT/ST via Chaos games.

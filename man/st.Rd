@@ -5,6 +5,7 @@
 \alias{st}
 \alias{plot.st}
 \alias{print.st}
+
 \title{Sierpinski  Triangle}
 \description{
  To initial, plot and show a Sierpinski  triangles.

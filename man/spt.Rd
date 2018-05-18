@@ -5,6 +5,7 @@
 \alias{spt}
 \alias{plot.spt}
 \alias{print.spt}
+
 \title{Sierpinski Pedal Triangle}
 \description{
  To initial, plot and show a Sierpinski pedal triangles.

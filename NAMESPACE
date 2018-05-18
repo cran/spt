@@ -2,4 +2,16 @@ useDynLib(spt, .registration = TRUE, .fixes = ".F_")
 export(.sptConnect)
 ##export everything that does not start with a .
 exportPattern("^[^\\.]")
-##importFrom(stats, dnorm, quantile, var)
+
+S3method(chaos, default) 
+S3method(chaos, spt) 
+S3method(chaos, st) 
+S3method(plot, spt) 
+S3method(plot, st) 
+S3method(print, spt) 
+S3method(print, st) 
+
+
+importFrom("graphics", "lines", "plot", "points", "polygon",
+     "segments")
+importFrom("stats", "runif")
